@@ -14,7 +14,7 @@ class UnitLocationsTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('location_name')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

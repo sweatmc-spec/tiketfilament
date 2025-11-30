@@ -2,7 +2,9 @@
 
 namespace App\Filament\Admin\Resources\Assets\Schemas;
 
+use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -12,25 +14,51 @@ class AssetForm
     {
         return $schema
             ->components([
+                
                 TextInput::make('name')
-                    ->required(),
+                    ->required()
+                    ->label('Asset Name'),
+
+                // AUTO-GENERATE CODE → tidak perlu input manual
                 TextInput::make('code')
-                    ->required(),
-                TextInput::make('category_id')
+                    ->disabled()
+                    ->default(null)
+                    ->label('Auto Code'),
+
+                // CATEGORY DROPDOWN (relationship)
+                Select::make('category_id')
+                    ->relationship('category', 'name')
+                    ->searchable()
                     ->required()
-                    ->numeric(),
-                TextInput::make('unit_id')
+                    ->label('Category'),
+
+                // UNIT DROPDOWN (relationship)
+                Select::make('unit_id')
+                    ->relationship('unit', 'name')
+                    ->searchable()
                     ->required()
-                    ->numeric(),
-                TextInput::make('vendor_id')
-                    ->numeric(),
+                    ->label('Unit'),
+
+                // VENDOR DROPDOWN (nullable)
+                Select::make('vendor_id')
+                    ->relationship('vendor', 'name')
+                    ->searchable()
+                    ->nullable()
+                    ->label('Vendor'),
+
                 TextInput::make('status')
-                    ->required()
-                    ->default('aktif'),
-                DatePicker::make('purchase_date'),
+                    ->default('aktif')
+                    ->required(),
+
+                DatePicker::make('purchase_date')
+                    ->label('Purchase Date'),
+
                 TextInput::make('purchase_price')
-                    ->numeric(),
-                DatePicker::make('warranty_expiry'),
+                    ->numeric()
+                    ->label('Purchase Price'),
+
+                DatePicker::make('warranty_expiry')
+                    ->label('Warranty Expiry'),
             ]);
     }
 }

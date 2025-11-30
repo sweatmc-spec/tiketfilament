@@ -11,7 +11,7 @@ class UnitLocationForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                TextInput::make('location_name')
                     ->required(),
             ]);
     }

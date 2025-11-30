@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Asset extends Model
 {
-    //
     protected $fillable = [
         'name',
         'code',
@@ -21,11 +20,11 @@ class Asset extends Model
 
     protected static function booted()
     {
-       static::creating(function ($asset) {
+        static::creating(function ($asset) {
             if (empty($asset->code)) {
                 $month = now()->format('m');
                 $year = now()->format('Y');
-                
+
                 $lastcode = static::whereYear('created_at', $year)
                     ->whereMonth('created_at', $month)
                     ->orderBy('code', 'desc')
@@ -41,5 +40,21 @@ class Asset extends Model
                 $asset->code = "ASSET-{$newNumber}-{$month}-{$year}";
             }
         });
+    }
+
+    // ⭐ Tambahkan relasi
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
     }
 }

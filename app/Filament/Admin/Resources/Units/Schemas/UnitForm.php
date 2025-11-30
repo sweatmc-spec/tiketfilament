@@ -2,7 +2,7 @@
 
 namespace App\Filament\Admin\Resources\Units\Schemas;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms;
 use Filament\Schemas\Schema;
 
 class UnitForm
@@ -11,11 +11,20 @@ class UnitForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
+                Forms\Components\TextInput::make('name')
                     ->required(),
-                TextInput::make('unit_location_id')
-                    ->required()
-                    ->numeric(),
+
+                Forms\Components\Select::make('unit_location_id')
+                    ->relationship('unitLocation', 'location_name')
+                    ->label('Location')
+                    ->searchable()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->label('New Location Name')
+                            ->required(),
+                    ])
+                    ->required(),
             ]);
     }
 }
